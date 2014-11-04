@@ -21,6 +21,7 @@ import javax.swing.JButton;
 
 public class MainWindow extends JFrame {
 //comment
+	//comment2
 	private JPanel contentPane;
 	private JPanel pnOuter1;
 	private JPanel panel_1;
