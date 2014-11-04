@@ -20,7 +20,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JButton;
 
 public class MainWindow extends JFrame {
-
+//comment
 	private JPanel contentPane;
 	private JPanel pnOuter1;
 	private JPanel panel_1;
