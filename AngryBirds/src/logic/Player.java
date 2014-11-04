@@ -12,10 +12,7 @@ public class Player {
 		super();
 		
 		for(int i = 0; i < birdsNumber; i++) {
-			do {
-			birds.add(new Bird(0,board.getRows().get(0)));
-			}
-			while(!board.getRows().get(0).getCells().get(i).hasBird());
+			birds.add(new Bird(birdsNumber,board.getRows().get(0)));
 		}
 		canMove = true;
 		setPoints(0);

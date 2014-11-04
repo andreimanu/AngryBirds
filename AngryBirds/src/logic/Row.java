@@ -24,6 +24,9 @@ public class Row {
 		return Cells;
 	}
 	
+	public int size() {
+		return Cells.size();
+	}
 	public Cell currentCell(int pos) {
 		return Cells.get(pos);
 		

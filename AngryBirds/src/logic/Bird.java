@@ -6,10 +6,16 @@ public class Bird {
 	private int currentRowId;
 	private Row currentRow;
 	
-	public Bird(int pos, Row currentRow) {
-		this.pos = pos;
-		currentRowId = 0;
+	public Bird(int numOfBirds, Row currentRow) {
 		this.currentRow = currentRow;
+		int pos = 0;
+		int seed = currentRow.size();
+		do{
+			pos = (int) (Math.random() * seed);
+			this.currentRow.getCells().get(pos).putBird();
+		}
+		while(!this.currentRow.getCells().get(pos).hasBird());
+		currentRowId = 0;
 	}
 	
 	public void setCurrentRow(Row currentRow) {
