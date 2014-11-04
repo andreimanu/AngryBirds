@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.EventQueue;
 
@@ -13,12 +12,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
 import javax.swing.JButton;
 
 import logic.Board;
@@ -27,6 +20,7 @@ import logic.Player;
 
 public class MainWindow extends JFrame {
  
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel pnOuter1;
 	private JPanel panel_1;
@@ -114,7 +108,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void initializePlayer() {
-		player = new Player(numOfBirds, road);
+		player = road.getPlayer();
 	}
 	
 	private void registerEvents() {

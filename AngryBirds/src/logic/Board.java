@@ -17,10 +17,17 @@ public class Board {
 	private int maxCells;
 	
 	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells) {
+		rows = new ArrayList<Row>();
 		setRowNumber(numOfRows);
 		setCellNumber(numOfCells);
 		initialize(multiplier, birdsNumber);
 	}
+	
+	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells, int dim) {
+		this(multiplier, birdsNumber, numOfRows,numOfCells);
+		this.dim = dim;
+	}
+	
 	public ArrayList<Row> getRows() {
 		return rows;
 	}
@@ -37,13 +44,16 @@ public class Board {
 
 	public void initialize(int multiplier, int birdsNumber) {
 		this.multiplier = multiplier;
-		currentPlayer = new Player(birdsNumber, this);
 		for(int i = 1; i < rowNumber - 1; i++) {
 			rows.add(new Row(i, false, cellNumber, values[i-1]*multiplier));
 		}
+		currentPlayer = new Player(birdsNumber, this);
 		diceNumber = 0;
 	}
 	
+	public Player getPlayer() {
+		return this.currentPlayer;
+	}
 	public void throwDice() {
 		diceNumber = Dice.throwDice(maxNumber);
 	}

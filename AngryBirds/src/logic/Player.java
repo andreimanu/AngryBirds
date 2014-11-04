@@ -10,7 +10,8 @@ public class Player {
 	
 	public Player(int birdsNumber, Board board) {
 		super();
-		
+		birds = new ArrayList<Bird>();
+		this.board = board;
 		for(int i = 0; i < birdsNumber; i++) {
 			birds.add(new Bird(birdsNumber,board.getRows().get(0)));
 		}

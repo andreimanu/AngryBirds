@@ -10,10 +10,13 @@ public class Row {
 	
 	public Row(int rowNumber, boolean isOuter, int NoCells, int cellValue) {
 		super();
-		int nextPos = 0;
+		Cells = new ArrayList<Cell>();
+		int nextPos = 1;
+		this.cellValue = cellValue;
 		for(int i = 0; i < NoCells; i++) {
-			nextPos += 1;
-			Cells.add(new Cell(nextPos, isOuter));
+			nextPos += i;
+			Cell temp = new Cell(nextPos, isOuter);
+			Cells.add(temp);
 			Cells.get(i).setValue(cellValue);
 		}
 		this.rowNumber = rowNumber;
