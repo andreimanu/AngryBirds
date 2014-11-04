@@ -4,17 +4,29 @@ import java.util.ArrayList;
 
 public class Player {
 	private int points;
-	private int pos;
-	private Row currentRow;
 	private boolean canMove;
-	private ArrayList<Birds> birds;
-	public Player(int birdsNumber) {
+	private ArrayList<Bird> birds;
+	private Board board;
+	
+	public Player(int birdsNumber, Board board) {
 		super();
+		
 		for(int i = 0; i < birdsNumber; i++) {
-			birds.add(new Birds());
+			do {
+			birds.add(new Bird(0,board.getRows().get(0)));
+			}
+			while(!board.getRows().get(0).getCells().get(i).hasBird());
 		}
 		canMove = true;
 		setPoints(0);
+	}
+	
+	public Bird getActiveBird() {
+		for(Bird b : birds) {
+			if(b.isActive())
+				return b;
+		}
+		return null;
 	}
 	public boolean getMove() {
 		return canMove;
@@ -29,18 +41,6 @@ public class Player {
 	}
 	public void setPoints(int points) {
 		this.points = points;
-	}
-	public int getPosition() {
-		return pos;
-	}
-	public void setPosition(int xPos) {
-		this.pos = xPos;
-	}
-	public Row getCurrentRow() {
-		return currentRow;
-	}
-	public void setCurrentRow(Row currentRow) {
-		this.currentRow = currentRow;
 	}
 	
 	public void incrementPoints(int pts) {

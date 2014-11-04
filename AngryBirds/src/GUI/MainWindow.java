@@ -114,7 +114,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void initializePlayer() {
-		player = new Player(numOfBirds);
+		player = new Player(numOfBirds, road);
 	}
 	
 	private void registerEvents() {

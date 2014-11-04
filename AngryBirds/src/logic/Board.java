@@ -21,7 +21,12 @@ public class Board {
 		setCellNumber(numOfCells);
 		initialize(multiplier, birdsNumber);
 	}
-	
+	public ArrayList<Row> getRows() {
+		return rows;
+	}
+	public int getCellNumber() {
+		return this.cellNumber;
+	}
 	private void setCellNumber(int numOfCells) {
 		this.cellNumber = numOfCells;
 	}
@@ -32,8 +37,7 @@ public class Board {
 
 	public void initialize(int multiplier, int birdsNumber) {
 		this.multiplier = multiplier;
-		currentPlayer = new Player(birdsNumber);
-		currentPlayer.setPosition(0);
+		currentPlayer = new Player(birdsNumber, this);
 		for(int i = 1; i < rowNumber - 1; i++) {
 			rows.add(new Row(i, false, cellNumber, values[i-1]*multiplier));
 		}
@@ -45,12 +49,12 @@ public class Board {
 	}
 	
 	public boolean validPlay(int i) {
-		return ((currentPlayer.getPosition() + diceNumber == i) && (diceNumber != 0));
+		return ((currentPlayer.getActiveBird().getPosition() + diceNumber == i) && (diceNumber != 0));
 	}
 	
 	public boolean checkPlay() {
 		boolean isPosible = false;
-		if (currentPlayer.getPosition() + diceNumber < maxCells )
+		if (currentPlayer.getActiveBird().getPosition() + diceNumber < maxCells )
 			isPosible = true;
 		else {
 			diceNumber = 0;
@@ -64,7 +68,7 @@ public class Board {
 	}
 	
 	public void makePlays() {
-		currentPlayer.setPosition(currentPlayer.getPosition() + diceNumber);
-		currentPlayer.incrementPoints(currentPlayer.getCurrentRow().getCells().get(currentPlayer.getPosition()).getValue());
+		currentPlayer.getActiveBird().setPosition(currentPlayer.getActiveBird().getPosition() + diceNumber);
+		currentPlayer.incrementPoints(currentPlayer.getActiveBird().getCurrentRow().getCells().get(currentPlayer.getActiveBird().getPosition()).getValue());
 	}
 }

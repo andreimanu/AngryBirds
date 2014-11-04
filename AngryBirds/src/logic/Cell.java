@@ -6,11 +6,13 @@ public class Cell {
 	private boolean isOuter;
 	private int value;
 	private boolean hasPowerUp;
+	private boolean hasBird;
 	
 	public Cell(int coord, boolean isOuter) {
 		this.coord = coord;
 		this.isOuter = isOuter;
 		hasPig = false;
+		hasBird = false;
 		value = 0;
 	}
 	
@@ -24,7 +26,12 @@ public class Cell {
 	public boolean hasPowerUp() {
 		return hasPowerUp;
 	}
-	
+	public void putBird() {
+		this.hasBird = true;
+	}
+	public void removeBird() {
+		this.hasBird = false;
+	}
 	public int getValue() {
 		return value;
 	}
@@ -45,6 +52,10 @@ public class Cell {
 	}
 	public void setOuter(boolean isOuter) {
 		this.isOuter = isOuter;
+	}
+
+	public boolean hasBird() {
+		return hasBird;
 	}
 	
 }
