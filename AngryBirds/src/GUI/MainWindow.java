@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
@@ -19,9 +21,12 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import javax.swing.JButton;
 
+import logic.Board;
+import logic.Player;
+
+
 public class MainWindow extends JFrame {
-//comment
-	//comment2
+ 
 	private JPanel contentPane;
 	private JPanel pnOuter1;
 	private JPanel panel_1;
@@ -53,10 +58,26 @@ public class MainWindow extends JFrame {
 	private JButton btn42;
 	private JButton btn41;
 	private JButton btn40;
-
+	private Player player;
+	private int numOfBirds = 3;
+	private int numOfRows = 5;
+	private int numOfCells = 5;
+	private MyActionListener firstListener;
+	private Board road;
 	/**
 	 * Launch the application.
 	 */
+
+	private class MyActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton source = (JButton) e.getSource();
+			int number = Integer.parseInt(source.getActionCommand());
+			play(number);
+		}
+	
+	}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -75,6 +96,35 @@ public class MainWindow extends JFrame {
 	 */
 	private int innerPn = 3;
 	private void initialize() {
+		paintGameState();
+		registerEvents();
+		initializePlayer();
+	}
+	
+	private void paintGameState() {
+		paintOuterPanels();
+		paintInnerPanels();		
+	}
+	
+	private void play(int pos) {
+		if(road.validPlay(pos)) {
+			road.makePlays();
+			paintGameState();
+		}
+	}
+	
+	private void initializePlayer() {
+		player = new Player(numOfBirds);
+	}
+	
+	private void registerEvents() {
+		for( int i = 0; i < pnOuter1.getComponents().length; i++) {
+			JButton button = (JButton) pnOuter1.getComponents()[i];
+			button.setActionCommand(String.valueOf(i));
+			button.addActionListener(firstListener);
+		}
+	}
+	private void paintOuterPanels() {
 		String image = "/imgs/sky.png";
 		Component[] buttons = pnOuter1.getComponents();
 		for(Component but: buttons) {
@@ -86,7 +136,9 @@ public class MainWindow extends JFrame {
 			JButton button = (JButton)but;
 			button.setIcon(new ImageIcon(getClass().getResource((image))));
 		}
-		
+	}
+	
+	private void paintInnerPanels() {
 		for(int i = 1; i <= innerPn; i++) {
 			String panelName = "panel_" + i;
 			Component[] cpComp = contentPane.getComponents();
@@ -97,14 +149,13 @@ public class MainWindow extends JFrame {
 					JPanel pan = (JPanel) cp;
 					Component[] buttons1 = pan.getComponents();
 					for(Component but: buttons1) {
-						image = "/imgs/grass.png";
+						String image = "/imgs/grass.png";
 						JButton button = (JButton)but;
 						button.setIcon(new ImageIcon(getClass().getResource((image))));
 					}
 				}
 			}
 		}
-		
 	}
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,6 +169,8 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPanel_2());
 		contentPane.add(getPanel_3());
 		contentPane.add(getPnOuter2());
+		firstListener = new MyActionListener();
+		road = new Board(1, numOfBirds, numOfRows, numOfCells);
 		initialize();
 	}
 	private JPanel getPnOuter1() {
@@ -143,8 +196,8 @@ public class MainWindow extends JFrame {
 			panel_1.add(getBtn12());
 			panel_1.add(getBtn11());
 			panel_1.add(getBtn10());
+			panel_1.setName("panel_1");
 		}
-		panel_1.setName("panel_1");
 		return panel_1;
 	}
 	private JPanel getPanel_2() {
@@ -157,8 +210,8 @@ public class MainWindow extends JFrame {
 			panel_2.add(getBtn22());
 			panel_2.add(getBtn23());
 			panel_2.add(getBtn24());
+			panel_2.setName("panel_2");
 		}
-		panel_2.setName("panel_2");
 		return panel_2;
 	}
 	private JPanel getPanel_3() {
@@ -171,8 +224,8 @@ public class MainWindow extends JFrame {
 			panel_3.add(getBtn32());
 			panel_3.add(getBtn31());
 			panel_3.add(getBtn30());
+			panel_3.setName("panel_3");
 		}
-		panel_3.setName("panel_3");
 		return panel_3;
 	}
 	private JPanel getPnOuter2() {

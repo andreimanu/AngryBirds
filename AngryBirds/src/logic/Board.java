@@ -16,10 +16,20 @@ public class Board {
 	private int maxNumber;
 	private int maxCells;
 	
-	public Board(int multiplier, int birdsNumber) {
+	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells) {
+		setRowNumber(numOfRows);
+		setCellNumber(numOfCells);
 		initialize(multiplier, birdsNumber);
 	}
 	
+	private void setCellNumber(int numOfCells) {
+		this.cellNumber = numOfCells;
+	}
+
+	private void setRowNumber(int numOfRows) {
+		this.rowNumber = numOfRows;	
+	}
+
 	public void initialize(int multiplier, int birdsNumber) {
 		this.multiplier = multiplier;
 		currentPlayer = new Player(birdsNumber);
@@ -30,11 +40,11 @@ public class Board {
 		diceNumber = 0;
 	}
 	
-	private void throwDice() {
+	public void throwDice() {
 		diceNumber = Dice.throwDice(maxNumber);
 	}
 	
-	private boolean validPlay(int i) {
+	public boolean validPlay(int i) {
 		return ((currentPlayer.getPosition() + diceNumber == i) && (diceNumber != 0));
 	}
 	
