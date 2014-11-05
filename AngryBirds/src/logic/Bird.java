@@ -13,6 +13,7 @@ public class Bird {
 		do{
 			pos = (int) (Math.random() * seed);
 			this.currentRow.getCells().get(pos).putBird();
+			System.out.println("There is a bird in: " + pos);
 		}
 		while(!this.currentRow.getCells().get(pos).hasBird());
 		currentRowId = 0;

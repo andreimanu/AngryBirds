@@ -22,11 +22,17 @@ public class Board {
 		setCellNumber(numOfCells);
 		this.multiplier = multiplier;
 		initialize(multiplier, birdsNumber);
+		this.maxNumber = 6;
 	}
 	
 	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells, int dim) {
 		this(multiplier, birdsNumber, numOfRows,numOfCells);
 		this.dim = dim;
+	}
+	
+	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells, int dim, int diceNumber) {
+		this(multiplier, birdsNumber, numOfRows,numOfCells, dim);
+		this.maxNumber = diceNumber;
 	}
 	
 	public ArrayList<Row> getRows() {
@@ -81,5 +87,9 @@ public class Board {
 	public void makePlays() {
 		currentPlayer.getActiveBird().setPosition(currentPlayer.getActiveBird().getPosition() + diceNumber);
 		currentPlayer.incrementPoints(currentPlayer.getActiveBird().getCurrentRow().getCells().get(currentPlayer.getActiveBird().getPosition()).getValue());
+	}
+	
+	public int getDice() {
+		return this.diceNumber;
 	}
 }

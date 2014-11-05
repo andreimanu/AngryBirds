@@ -15,6 +15,7 @@ public class Player {
 		for(int i = 0; i < birdsNumber; i++) {
 			birds.add(new Bird(birdsNumber,board.getRows().get(0)));
 		}
+		birds.get(0).setActive(true);
 		canMove = true;
 		setPoints(0);
 	}
@@ -43,6 +44,10 @@ public class Player {
 	
 	public void incrementPoints(int pts) {
 		setPoints(getPoints() + pts);
+	}
+	
+	public ArrayList<Bird> getBirds() {
+		return birds;
 	}
 	
 }
