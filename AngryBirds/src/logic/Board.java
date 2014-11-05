@@ -20,6 +20,7 @@ public class Board {
 		rows = new ArrayList<Row>();
 		setRowNumber(numOfRows);
 		setCellNumber(numOfCells);
+		this.multiplier = multiplier;
 		initialize(multiplier, birdsNumber);
 	}
 	
