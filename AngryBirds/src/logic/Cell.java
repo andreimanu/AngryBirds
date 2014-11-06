@@ -1,19 +1,17 @@
 package logic;
 
 public class Cell {
-	public boolean hasPig;
+	private boolean hasPig;
 	private int coord;
-	private boolean isOuter;
 	private int value;
 	private boolean hasPowerUp;
 	private boolean hasBird;
 	
-	public Cell(int coord, boolean isOuter) {
+	public Cell(int coord, int value) {
 		this.coord = coord;
-		this.isOuter = isOuter;
 		hasPig = false;
 		hasBird = false;
-		value = 0;
+		this.value = value;
 	}
 	
 	public void setPowerUp(boolean val) {
@@ -35,23 +33,17 @@ public class Cell {
 	public int getValue() {
 		return value;
 	}
-	public boolean isHasPig() {
+	public boolean hasPig() {
 		return hasPig;
 	}
-	public void setHasPig(boolean hasPig) {
-		this.hasPig = hasPig;
+	public void putPig() {
+		this.hasPig = true;
 	}
 	public int getCoord() {
 		return coord;
 	}
 	public void setCoord(int xCoord) {
 		this.coord = xCoord;
-	}
-	public boolean isOuter() {
-		return isOuter;
-	}
-	public void setOuter(boolean isOuter) {
-		this.isOuter = isOuter;
 	}
 
 	public boolean hasBird() {

@@ -7,25 +7,33 @@ public class Player {
 	private boolean canMove;
 	private ArrayList<Bird> birds;
 	private Board board;
+	private boolean hasActiveBird;
 	
 	public Player(int birdsNumber, Board board) {
 		super();
 		birds = new ArrayList<Bird>();
 		this.board = board;
 		for(int i = 0; i < birdsNumber; i++) {
-			birds.add(new Bird(birdsNumber,board.getRows().get(0)));
+			birds.add(new Bird(board.getRow()));
 		}
-		birds.get(0).setActive(true);
 		canMove = true;
 		setPoints(0);
+		hasActiveBird = false;
 	}
-	
+	public boolean hasActiveBird() {
+		return hasActiveBird;
+	}
 	public Bird getActiveBird() {
 		for(Bird b : birds) {
 			if(b.isActive())
 				return b;
 		}
 		return null;
+	}
+	
+	public void disableBirds() {
+		for(Bird b : birds)
+			b.setActive(false);
 	}
 	public boolean getMove() {
 		return canMove;

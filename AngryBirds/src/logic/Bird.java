@@ -5,20 +5,38 @@ public class Bird {
 	private int pos;
 	private int currentRowId;
 	private Row currentRow;
+	private boolean isLocked;
+	private boolean isDead;
 	
-	public Bird(int numOfBirds, Row currentRow) {
+	public Bird(Row currentRow) {
 		this.currentRow = currentRow;
-		int pos = 0;
-		int seed = currentRow.size();
-		do{
-			pos = (int) (Math.random() * seed);
-			this.currentRow.getCells().get(pos).putBird();
-			System.out.println("There is a bird in: " + pos);
-		}
-		while(!this.currentRow.getCells().get(pos).hasBird());
 		currentRowId = 0;
+		putBirds();
 	}
 	
+	private void putBirds() {
+		int position;
+		int seed = 5;
+		do{
+			position = (int) (Math.random() * seed);
+		}
+		while(this.currentRow.getCell(position).hasBird());
+		this.currentRow.getCell(position).putBird();
+		this.pos = position;
+		System.out.println("There is a bird in: " + position);
+		isLocked = false;
+		isDead = false;
+	}
+	//To kill a mockingbird
+	public void kill() {
+		isLocked = true;
+		isDead = true;
+		setPosition(-1);
+	}
+	
+	public boolean isDead() {
+		return isDead;
+	}
 	public void setCurrentRow(Row currentRow) {
 		this.currentRow = currentRow;
 	}
@@ -36,6 +54,9 @@ public class Bird {
 	}
 	
 	public void setPosition(int pos) {
+		if(pos >= 20) {
+			this.isLocked = true;
+		}
 		this.pos = pos;
 	}
 	
@@ -43,8 +64,16 @@ public class Bird {
 		return pos;
 	}
 	
+	public boolean isLocked() {
+		return isLocked;
+	}
+	
 	public void setActive(boolean active) {
-		isActive = active;
+		if(!isLocked)
+			isActive = active;
+		else {
+			isActive = false;
+		}
 	}
 	
 	public boolean isActive() {

@@ -1,52 +1,44 @@
 package logic;
 
-import java.util.ArrayList;
-
 public class Row {
-	private ArrayList<Cell> Cells;
-	private int rowNumber;
-	private boolean isOuter;
-	private int cellValue;
-	
-	public Row(int rowNumber, boolean isOuter, int NoCells, int cellValue) {
-		super();
-		Cells = new ArrayList<Cell>();
-		int nextPos = 1;
-		this.cellValue = cellValue;
-		for(int i = 0; i < NoCells; i++) {
+	private Cell[] Cells;
+	private int[] values = {20, 40, 80};
+	public Row(int noCells, int multiplier) {
+		Cells = new Cell[noCells];
+		int tempValue;
+		int nextPos = 0;
+		for(int i = 0; i < noCells; i++) {
+			tempValue = 0;
 			nextPos += i;
-			Cell temp = new Cell(nextPos, isOuter);
-			Cells.add(temp);
-			Cells.get(i).setValue(cellValue);
+			if(i >= 20)
+				tempValue = 300;
+			else if ( i >= 15 )
+				tempValue = values[2];
+			else if ( i >= 10 )
+				tempValue = values[1];
+			else if ( i >= 5)
+				tempValue = values[0];
+			Cell temp = new Cell(nextPos, tempValue * multiplier);
+			Cells[i] = temp;
 		}
-		this.rowNumber = rowNumber;
-		this.isOuter = isOuter;
 	}
 
-	public ArrayList<Cell> getCells() {
+	public Cell[] getCells() {
 		return Cells;
 	}
 	
+	public Cell getCell(int pos) {
+		if(pos < size() && pos >= 0)
+			return Cells[pos];
+		return null;
+	}
+	
 	public int size() {
-		return Cells.size();
+		return Cells.length;
 	}
 	public Cell currentCell(int pos) {
-		return Cells.get(pos);
+		return Cells[pos];
 		
 	}
-	
-	public int getRowNumber() {
-		return rowNumber;
-	}
-	public void setRowNumber(int rowNumber) {
-		this.rowNumber = rowNumber;
-	}
-	public boolean isOuter() {
-		return isOuter;
-	}
-	public void setOuter(boolean isOuter) {
-		this.isOuter = isOuter;
-	}
-	
 	
 }

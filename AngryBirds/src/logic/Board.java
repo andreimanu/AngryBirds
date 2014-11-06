@@ -2,41 +2,40 @@ package logic;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 
 public class Board {
 	
-	private ArrayList<Row> rows;
-	private int dim;
+	private Row row;
 	private int diceNumber;
 	private Player currentPlayer;
-	private int rowNumber;
 	private int cellNumber;
-	private int[] values = {20, 40, 80};
 	private int multiplier;
 	private int maxNumber;
 	private int maxCells;
+	private Pig[] pigs;
 	
-	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells) {
-		rows = new ArrayList<Row>();
-		setRowNumber(numOfRows);
+	public Board(int multiplier, int birdsNumber,int numOfCells, int pigNumber) {
+		row = new Row(numOfCells, multiplier);
 		setCellNumber(numOfCells);
 		this.multiplier = multiplier;
-		initialize(multiplier, birdsNumber);
+		pigs = new Pig[pigNumber];
+		initialize(multiplier, birdsNumber, pigNumber);
 		this.maxNumber = 6;
+		this.maxCells = 25;
+	}
+		
+	public Board(int multiplier, int birdsNumber, int numOfCells, int pigNumber, int maxDice) {
+		this(multiplier, birdsNumber, numOfCells, pigNumber);
+		this.maxNumber = maxDice;
 	}
 	
-	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells, int dim) {
-		this(multiplier, birdsNumber, numOfRows,numOfCells);
-		this.dim = dim;
+	public Pig[] getPigs() {
+		return pigs;
 	}
-	
-	public Board(int multiplier, int birdsNumber, int numOfRows, int numOfCells, int dim, int diceNumber) {
-		this(multiplier, birdsNumber, numOfRows,numOfCells, dim);
-		this.maxNumber = diceNumber;
-	}
-	
-	public ArrayList<Row> getRows() {
-		return rows;
+	public Row getRow() {
+		return row;
 	}
 	public int getCellNumber() {
 		return this.cellNumber;
@@ -45,18 +44,17 @@ public class Board {
 		this.cellNumber = numOfCells;
 	}
 
-	private void setRowNumber(int numOfRows) {
-		this.rowNumber = numOfRows;	
-	}
-
-	public void initialize(int multiplier, int birdsNumber) {
+	public void initialize(int multiplier, int birdsNumber, int pigsNumber) {
 		this.multiplier = multiplier;
-		for(int i = 1; i < rowNumber - 1; i++) {
-			rows.add(new Row(i, false, cellNumber, values[i-1]*multiplier));
-		}
 		currentPlayer = new Player(birdsNumber, this);
 		diceNumber = 0;
+		currentPlayer.setPoints(0);
+		for(int i = 0; i < pigs.length; i++) {
+			pigs[i] = new Pig(getRow());
+			pigs[i].putPig();
+		}
 	}
+	
 	
 	public Player getPlayer() {
 		return this.currentPlayer;
@@ -66,27 +64,52 @@ public class Board {
 	}
 	
 	public boolean validPlay(int i) {
-		return ((currentPlayer.getActiveBird().getPosition() + diceNumber == i) && (diceNumber != 0));
+		boolean result = false;
+		try {
+			result = ((currentPlayer.getActiveBird().getPosition() + diceNumber == i) && (diceNumber != 0) && (!row.getCell(i).hasBird()));
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Please select a bird first!", "Whoops!", JOptionPane.PLAIN_MESSAGE);
+		}
+		return result;
 	}
 	
 	public boolean checkPlay() {
-		boolean isPosible = false;
-		if (currentPlayer.getActiveBird().getPosition() + diceNumber < maxCells )
-			isPosible = true;
-		else {
-			diceNumber = 0;
-			nextTurn();
+		boolean isPossible = false;
+		ArrayList<Bird> birds = currentPlayer.getBirds();
+		for(Bird b : birds) {
+			if(!b.isLocked() && ((b.getPosition() + diceNumber) < maxCells)) {
+				if(!row.getCell(b.getPosition()+diceNumber).hasBird())
+					isPossible = true;
+			}
 		}
-		return isPosible;
-	}
-	
-	public void nextTurn() {
-		diceNumber = 0;
-	}
+		return isPossible;
+	} 
 	
 	public void makePlays() {
-		currentPlayer.getActiveBird().setPosition(currentPlayer.getActiveBird().getPosition() + diceNumber);
-		currentPlayer.incrementPoints(currentPlayer.getActiveBird().getCurrentRow().getCells().get(currentPlayer.getActiveBird().getPosition()).getValue());
+		int pos = currentPlayer.getActiveBird().getPosition() + diceNumber;
+		row.getCell(currentPlayer.getActiveBird().getPosition()).removeBird();
+		if ( row.getCell(pos).hasPig() ) {
+			currentPlayer.getActiveBird().kill();
+			for(Pig p : pigs) {
+				if ( p.getPosition() == pos )
+					p.setHidden(false);
+			}
+		}
+		else {
+			currentPlayer.getActiveBird().setPosition(pos);
+			row.getCell(pos).putBird();
+			currentPlayer.incrementPoints(row.getCell(pos).getValue());
+		}
+		
+	}
+	public boolean isOver() {
+		boolean isOver = true;
+		for(Bird b : currentPlayer.getBirds()) {
+			if(!b.isLocked())
+				isOver = false;
+		}
+		return isOver;
 	}
 	
 	public int getDice() {
